@@ -76,10 +76,11 @@ export default class News extends Component {
       <div className='container my-3'>
         <div className="row my-3 mx-5 ">
           <h2 className='text-center'>Top Headlines</h2>
+          <h3 className='text-center text-success'><b>{this.props.category}</b></h3>
           {this.state.loading && <Spinner/>}
           {!this.state.loading && this.state.newsArticle.map((item) => {
             return <div className="col-md-4 my-4 d-flex justify-content-center" key={item.url}>
-              <NewsItem title={item.title} description={item.description} newsUrl={item.url} imageUrl={item.urlToImage} />
+              <NewsItem title={item.title} description={item.description} newsUrl={item.url} imageUrl={item.urlToImage} date = {item.publishedAt} author = {item.author} source= {item.source.name}/>
             </div>
           })}
         </div>
