@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import NewsItem from './NewsItem';
 import Spinner from './Spinner';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
+import Newsgif from './Newsgif';
 
 export default class News extends Component {
 
@@ -27,8 +28,8 @@ export default class News extends Component {
     }
   }
 
-  async componentDidMount() {
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=11fc6bdec96049ffb10672b70f99e6ee&page=1&pageSize=${this.props.pageSize}`;
+    async newsUpdate() {
+    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=11fc6bdec96049ffb10672b70f99e6ee&page=1&pageSize=${this.props.pageSize}`;
     this.setState({loading:true})
     let data = await fetch(url);
     let parsedData = await data.json();
@@ -40,34 +41,26 @@ export default class News extends Component {
     });
   }
 
+  async componentDidMount() {
+    this.newsUpdate();
+  }
+
   handlePrevButton = async () => {
     window.scroll(0,0);
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=11fc6bdec96049ffb10672b70f99e6ee&page=${this.state.page - 1}&pageSize=${this.props.pageSize}`;
-    this.setState({loading: true});
-    let data = await fetch(url);
-    let parsedData = await data.json();
-    console.log(parsedData);
     this.setState({
-      page: this.state.page - 1,
-      newsArticle: parsedData.articles,
-      loading: false
-    });
+      page: this.state.page - 1
+    })
+    this.newsUpdate();
+
   }
 
   handleNextButton = async () => {
-    
-      let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=11fc6bdec96049ffb10672b70f99e6ee&page=${this.state.page + 1}&pageSize=${this.props.pageSize}`;
-      this.setState({loading: true});
-      let data = await fetch(url);
-      let parsedData = await data.json();
-      console.log(parsedData);
-      this.setState({
-        page: this.state.page + 1,
-        newsArticle: parsedData.articles,
-        loading: false
-      });
-    
+  
     window.scroll(0,0)
+    this.setState({
+      page: this.state.page + 1
+    })
+    this.newsUpdate();
   }
 
 
@@ -75,7 +68,7 @@ export default class News extends Component {
     return (
       <div className='container my-3'>
         <div className="row my-3 mx-5 ">
-          <h2 className='text-center'>Top Headlines</h2>
+          <h2 className='text-center ' > <Newsgif/> Top Headlines</h2>
           <h3 className='text-center text-success'><b>{this.props.category}</b></h3>
           {this.state.loading && <Spinner/>}
           {!this.state.loading && this.state.newsArticle.map((item) => {
