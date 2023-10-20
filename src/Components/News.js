@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import NewsItem from './NewsItem';
 import Spinner from './Spinner';
 import PropTypes from 'prop-types';
-import Newsgif from './Newsgif';
+import Newsgif from './Newsgif'
 
 export default class News extends Component {
 
@@ -19,13 +19,14 @@ export default class News extends Component {
   }
 
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       newsArticle: [],
       loading: false,
       page: 1
     }
+    document.title = `${this.props.category}-TajaKhabar`
   }
 
     async newsUpdate() {
@@ -67,8 +68,8 @@ export default class News extends Component {
   render() {
     return (
       <div className='container my-3'>
-        <div className="row my-3 mx-5 ">
-          <h2 className='text-center ' > <Newsgif/> Top Headlines</h2>
+        <div className="row my-3 mx-5">
+          <h2 className=' d-flex justify-content-center '><span><Newsgif/></span> Top Headlines <span><Newsgif/></span> </h2>
           <h3 className='text-center text-success'><b>{this.props.category}</b></h3>
           {this.state.loading && <Spinner/>}
           {!this.state.loading && this.state.newsArticle.map((item) => {
